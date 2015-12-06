@@ -997,7 +997,26 @@ model.Sample.table = Table(
     Column( "folder_id", Integer, ForeignKey( "library_folder.id" ), index=True ),
     Column( "deleted", Boolean, index=True, default=False ),
     Column( "workflow", JSONType, nullable=True ),
-    Column( "history_id", Integer, ForeignKey( "history.id" ), nullable=True ) )
+    Column( "history_id", Integer, ForeignKey( "history.id" ), nullable=True ),
+    Column( "project_id", Integer, ForeignKey( "project.id" ), nullable=True ),
+    Column( "sample_data", JSONType, nullable=True) )
+
+model.Project.table = Table(
+    'project', metadata,
+    Column( "id", Integer, primary_key=True ),
+    Column( "create_time", DateTime, default=now ),
+    Column( "update_time", DateTime, default=now, onupdate=now ),
+    Column( "name", TrimmedString( 255 ) ),
+    Column( "role_id", Integer, ForeignKey( "role.id" ) ),
+    Column( "sample_type_id", Integer, ForeignKey( "sample_type.id" ) ) )
+
+model.SampleType.table = Table(
+    'sample_type', metadata,
+    Column( "id", Integer, primary_key=True ),
+    Column( "create_time", DateTime, default=now ),
+    Column( "update_time", DateTime, default=now, onupdate=now ),
+    Column( "name", TrimmedString( 255 ) ),
+    Column( "data_definition", JSONType, nullable=True ) )
 
 model.SampleState.table = Table(
     "sample_state", metadata,
@@ -1427,6 +1446,10 @@ mapper( model.Request, model.Request.table, properties=dict(
 ) )
 
 mapper( model.RequestEvent, model.RequestEvent.table, properties=None )
+
+mapper( model.Project, model.Project.table, properties=None )
+
+mapper( model.SampleType, model.SampleType.table, properties=None )
 
 mapper( model.ExternalService, model.ExternalService.table, properties=dict(
     form_definition=relation( model.FormDefinition,

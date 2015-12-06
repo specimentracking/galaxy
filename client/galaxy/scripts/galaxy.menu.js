@@ -86,25 +86,25 @@ var GalaxyMenu = Backbone.Model.extend({
         //
         // Lab menu.
         //
-        if ( this.options.user_requests ) {
-            var tab_lab = new Masthead.GalaxyMastheadTab({
-                id      : 'lab',
-                title   : 'Lab'
-            });
-            tab_lab.add({
-                title   : 'Sequencing Requests',
-                content : 'requests/index'
-            });
-            tab_lab.add({
-                title   : 'Find Samples',
-                content : 'requests/find_samples_index'
-            });
-            tab_lab.add({
-                title   : 'Help',
-                content : this.options.lims_doc_url
-            });
-            this.masthead.append( tab_lab );
-        }
+        // if ( this.options.user_requests ) {
+        var tab_lab = new Masthead.GalaxyMastheadTab({
+            id      : 'lab',
+            title   : 'Lab'
+        });
+        tab_lab.add({
+            title   : 'Specimen Tracking',
+            content : 'specimens/index'
+        });
+        // tab_lab.add({
+        //     title   : 'Find Samples',
+        //     content : 'requests/find_samples_index'
+        // });
+        // tab_lab.add({
+        //     title   : 'Help',
+        //     content : this.options.lims_doc_url
+        // });
+        this.masthead.append( tab_lab );
+        // }
 
         //
         // Visualization tab.

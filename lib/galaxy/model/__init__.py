@@ -4164,14 +4164,38 @@ class RequestTypePermissions( object ):
         self.role = role
 
 
+class Project ( object, Dictifiable ):
+    def __init__( self, name=None, role_id=None ):
+        self.name = name,
+        self.role_id = role_id
+
+    def to_dict( self, view='element' ):
+        rval = dict( id=self.id,
+                     name=self.name,
+                     role_id=self.role_id )
+        return rval
+
+
+class SampleType ( object, Dictifiable ):
+    def __init__( self, name=None, data_definition=None ):
+        self.name = name,
+        self.data_definition = data_definition
+
+    def to_dict( self, view='element' ):
+        rval = dict( id=self.id,
+                     name=self.name,
+                     data_definition=self.data_definition )
+        return rval
+
+
 class Sample( object, Dictifiable ):
     # The following form_builder classes are supported by the Sample class.
     supported_field_types = [ CheckboxField, SelectField, TextField, WorkflowField, WorkflowMappingField, HistoryField ]
     bulk_operations = Bunch( CHANGE_STATE='Change state',
                              SELECT_LIBRARY='Select data library and folder' )
-    dict_collection_visible_keys = ( 'id', 'name' )
+    dict_collection_visible_keys = ( 'id', 'name', 'bar_code', 'project_id', 'create_time', 'update_time', 'sample_data' )
 
-    def __init__(self, name=None, desc=None, request=None, form_values=None, bar_code=None, library=None, folder=None, workflow=None, history=None):
+    def __init__(self, name=None, desc=None, request=None, form_values=None, bar_code=None, library=None, folder=None, workflow=None, history=None, project_id=None, sample_data=None):
         self.name = name
         self.desc = desc
         self.request = request
@@ -4181,6 +4205,8 @@ class Sample( object, Dictifiable ):
         self.folder = folder
         self.history = history
         self.workflow = workflow
+        self.project_id = project_id
+        self.sample_data = sample_data
 
     @property
     def state( self ):

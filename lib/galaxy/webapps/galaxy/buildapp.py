@@ -392,6 +392,52 @@ def populate_api_routes( webapp, app ):
                            action='get_api_key',
                            conditions=dict( method=[ "GET" ] ) )
 
+    # ======================================
+    # ===== SPECIMENS AND PROJECTS API =====
+    # ======================================
+
+    webapp.mapper.connect( 'specimens_list_by_project',
+                           '/api/projects/:project_id/specimens/',
+                           controller='specimens',
+                           action='index',
+                           conditions=dict( method=[ "GET" ] ) )
+
+    webapp.mapper.connect( 'specimen_by_barcode',
+                           '/api/projects/:project_id/check',
+                           controller='specimens',
+                           action='show',
+                           conditions=dict( method=[ "GET" ] ) )
+
+    webapp.mapper.connect( 'create_a_specimen',
+                           '/api/projects/:project_id/specimens/',
+                           controller='specimens',
+                           action='create',
+                           conditions=dict( method=[ "POST" ] ) )
+
+    webapp.mapper.connect( 'create_a_project',
+                           '/api/projects/',
+                           controller='projects',
+                           action='create',
+                           conditions=dict( method=[ "POST" ] ) )
+
+    webapp.mapper.connect( 'specimen_by_id',
+                           '/api/specimens/:sample_id',
+                           controller='specimens',
+                           action='show',
+                           conditions=dict( method=[ "GET" ] ) )
+
+    webapp.mapper.connect( 'update_a_specimen',
+                           '/api/projects/:project_id/specimens/:sample_id',
+                           controller='specimens',
+                           action='update',
+                           conditions=dict( method=[ "PATCH" ] ) )
+
+    webapp.mapper.connect( 'delete_a_specimen',
+                           '/api/specimens/:sample_id',
+                           controller='specimens',
+                           action='delete',
+                           conditions=dict( method=[ "DELETE" ] ) )
+
     # =======================
     # ===== LIBRARY API =====
     # =======================

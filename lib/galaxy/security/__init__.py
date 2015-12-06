@@ -11,6 +11,9 @@ from galaxy import eggs
 eggs.require('SQLAlchemy')
 from sqlalchemy import and_, false, or_, not_
 from sqlalchemy.orm import eagerload_all
+from galaxy import exceptions
+from sqlalchemy.orm.exc import MultipleResultsFound
+from sqlalchemy.orm.exc import NoResultFound
 
 from galaxy.util import listify
 from galaxy.util.bunch import Bunch
@@ -185,6 +188,25 @@ class GalaxyRBACAgent( RBACAgent ):
         intermed = map( None, map( getattr, seq, ( attr, ) * len( seq ) ), xrange( len( seq ) ), seq )
         intermed.sort()
         return map( operator.getitem, intermed, ( -1, ) * len( intermed ) )
+
+    def has_role( self, trans, role_id ):
+        """
+        Checks whether given user has given role by searching for exactly _one_ UserRoleAssociation in the database.
+        """
+        user = trans.user
+        role_association = None
+        try:
+            role_association = trans.sa_session.query( trans.app.model.UserRoleAssociation ) \
+                                    .filter( and_( self.model.UserRoleAssociation.table.c.role_id == role_id,
+                                                   self.model.UserRoleAssociation.table.c.user_id == user.id ) ) \
+                                    .one()
+        except MultipleResultsFound:
+            raise exceptions.InconsistentDatabase( 'Multiple UserRoleAssociation found for user and role. User: ' + str( user.email ) )
+        except NoResultFound:
+            return False
+        except Exception, e:
+            raise exceptions.InternalServerError( 'Error loading from the database.' + str( e ) )
+        return role_association
 
     def _get_npns_roles( self, trans ):
         """
