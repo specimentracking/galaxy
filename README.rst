@@ -1,26 +1,19 @@
-.. figure:: https://wiki.galaxyproject.org/Images/GalaxyLogo?action=AttachFile&do=get&target=galaxy_project_logo.jpg
-   :alt: Galaxy Logo
+Specimen Tracking Quickstart
+============================
+This fork contains modified Galaxy release branch `specimen_tracking_15.10` that introduces backend, frontend and API changes allowing integration of specimen tracking functionality.
 
-The latest information about Galaxy is available via `https://galaxyproject.org/ <https://galaxyproject.org/>`__
+related resources:
 
-.. image:: https://img.shields.io/badge/questions-galaxy%20biostar-blue.svg
-    :target: https://biostar.usegalaxy.org
-    :alt: Ask a question
+* Trello development board https://trello.com/b/hllw7G7C/development
+* API documentation http://docs.galaxysampletracking.apiary.io/
+* presentation of this project @GCC2014 http://www.slideshare.net/MartinCech1/cechspecimentracking
+* mobile app mockups https://moqups.com/martenson/ehuJNy2b/
 
-.. image:: https://img.shields.io/badge/chat-irc.freenode.net%23galaxyproject-blue.svg
-    :target: https://webchat.freenode.net/?channels=galaxyproject
-    :alt: Chat with us
-
-.. image:: https://readthedocs.org/projects/galaxy/badge/?version=master
-    :target: https://galaxy.readthedocs.org/en/master/
-    :alt: Documentation Status
-
-.. image:: https://travis-ci.org/galaxyproject/galaxy.svg?branch=dev
-    :target: https://travis-ci.org/galaxyproject/galaxy
-    :alt: Inspect the test results
 
 Galaxy Quickstart
 =================
+
+**Visit home Galaxy repository at https://github.com/galaxyproject/galaxy**
 
 Galaxy requires Python 2.6 or 2.7. To check your python version, run:
 
