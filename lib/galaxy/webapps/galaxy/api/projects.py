@@ -1,7 +1,6 @@
 """
 API operations on a projects.
 """
-from galaxy import util
 from galaxy import exceptions
 from galaxy.web import _future_expose_api as expose_api
 from galaxy.web import _future_expose_api_anonymous as expose_api_anonymous

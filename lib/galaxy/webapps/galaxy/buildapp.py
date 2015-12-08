@@ -420,6 +420,12 @@ def populate_api_routes( webapp, app ):
                            action='create',
                            conditions=dict( method=[ "POST" ] ) )
 
+    webapp.mapper.connect( 'list_projects',
+                           '/api/projects/',
+                           controller='projects',
+                           action='index',
+                           conditions=dict( method=[ "GET" ] ) )
+
     webapp.mapper.connect( 'specimen_by_id',
                            '/api/specimens/:sample_id',
                            controller='specimens',
