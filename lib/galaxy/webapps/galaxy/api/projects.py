@@ -32,7 +32,10 @@ class ProjectsController( BaseAPIController ):
         query = trans.sa_session.query( trans.app.model.Project )
         projects = []
         for project in query:
-            projects.append( project.to_dict() )
+            project_dict = project.to_dict()
+            project_dict[ 'role_id' ] = trans.security.encode_id( project_dict[ 'role_id' ] )
+            project_dict[ 'id' ] = trans.security.encode_id( project_dict[ 'id' ] )
+            projects.append( project_dict )
         return projects
 
     def __decode_id( self, trans, encoded_id, object_name=None ):
@@ -72,6 +75,8 @@ class ProjectsController( BaseAPIController ):
         except Exception, e:
             raise exceptions.InternalServerError( 'Error loading from the database.' + str( e ) )
         project_dict = project.to_dict()
+        project_dict[ 'role_id' ] = trans.security.encode_id( project_dict[ 'role_id' ] )
+        project_dict[ 'id' ] = trans.security.encode_id( project_dict[ 'id' ] )
         return project_dict
 
     @expose_api
@@ -84,7 +89,8 @@ class ProjectsController( BaseAPIController ):
         .. note:: Currently, only admin users can create projects.
 
         :param  payload: dictionary structure containing::
-            'name':         the new project's name (required)
+            'name':             the new project's name (required)
+            'encoded_role_id':  the encoded id of the connected role (required)
         :type   payload: dict
 
         :returns:   detailed project information
@@ -92,16 +98,20 @@ class ProjectsController( BaseAPIController ):
 
         :raises: ItemAccessibilityException, RequestParameterMissingException
         """
-        params = util.Params( payload )
-        name = util.restore_text( params.get( 'name', None ) )
+        name = payload[ 'name' ]
+        encoded_role_id = payload[ 'encoded_role_id' ]
         if not name:
             raise exceptions.RequestParameterMissingException( "Missing required parameter 'name'." )
-
+        if not encoded_role_id:
+            raise exceptions.RequestParameterMissingException( "Missing required parameter 'encoded_role_id'." )
         if not trans.user_is_admin:
             raise exceptions.ItemAccessibilityException( 'Only administrators can create projects.' )
         else:
-            project = trans.app.model.Project( name=name )
+            decoded_role_id = self.__decode_id( trans, encoded_role_id, 'role' )
+            project = trans.app.model.Project( name=name, role_id=decoded_role_id )
             trans.sa_session.add( project )
             trans.sa_session.flush()
         project_dict = project.to_dict()
+        project_dict[ 'role_id' ] = trans.security.encode_id( project_dict[ 'role_id' ] )
+        project_dict[ 'id' ] = trans.security.encode_id( project_dict[ 'id' ] )
         return project_dict
