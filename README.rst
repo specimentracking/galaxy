@@ -1,6 +1,7 @@
 Specimen Tracking Quickstart
 ============================
 This fork contains modified Galaxy release branch `specimen_tracking_15.10` that introduces backend, frontend and API changes allowing integration of specimen tracking functionality.
+See the wiki https://github.com/specimentracking/galaxy/wiki to get you started.
 
 related resources:
 
